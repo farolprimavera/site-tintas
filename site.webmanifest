@@ -1,0 +1,19 @@
+{
+  "name": "Simulador de Tintas · Farol da Primavera",
+  "short_name": "Tintas Farol",
+  "description": "Veja as cores da loja aplicadas em ambientes, monte sua cor no tintométrico e calcule quanto comprar.",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "start_url": "./index.html",
+  "scope": "./",
+  "id": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#ffffff",
+  "theme_color": "#0e5a3a",
+  "icons": [
+    { "src": "icones/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icones/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icones/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

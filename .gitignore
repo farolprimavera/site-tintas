@@ -1,0 +1,36 @@
+# ============================================================
+# Só sobe o que o site precisa para funcionar.
+# ============================================================
+
+# Ferramentas de trabalho (scripts, planilhas-fonte, relatório)
+ferramentas/
+
+# Fotos e máscaras originais dos ambientes: o site usa a cópia
+# embutida em dados/ambientes.js
+ambientes/
+
+# Cópia em JSON dos dados: o site lê dados/tintas.js
+dados/tintas.json
+
+# Briefing do projeto (fica só no seu computador)
+README.md
+
+# Ícone que nenhuma página usa
+icones/favicon-32.png
+
+# Planilhas, PDFs e arquivos soltos que caírem na pasta
+*.xlsx
+*.xls
+*.csv
+*.pdf
+*.txt
+
+# Lixo de Python, compactados e sistema
+__pycache__/
+*.pyc
+build/
+*.zip
+*.rar
+Thumbs.db
+desktop.ini
+.vscode/
