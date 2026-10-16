@@ -23,7 +23,7 @@ const Ofertas = {
   },
 
   card({ c, l, p, desconto }) {
-    const link = `index.html#cor=${encodeURIComponent(c.id)}&amb=sala`;
+    const link = `ambiente.html#cor=${encodeURIComponent(c.id)}&amb=sala`;
     const pedido = App.whatsapp(`Olá! Quero a oferta: ${l.nome}, cor ${c.nome} (${codigoTexto(c) || c.marca}), ${p.embalagem}, por ${brl(p.oferta)}. Cód. ${p.codigo}.`);
     return `<article class="oferta">
       <div class="oferta-foto">

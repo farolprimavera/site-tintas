@@ -92,26 +92,7 @@
     <div id="carrossel"></div>
   </section>
 
-  <!-- aviso de calibração de tela (js/app.js guarda se o cliente fechou) -->
-  <div class="aviso-tela" id="avisoTela" hidden>
-    <p><strong>As cores da tela são aproximadas.</strong> O brilho e o contraste de cada celular ou monitor mudam o tom.
-      Antes de comprar, confira no leque da marca ou peça uma amostra no balcão.</p>
-    <button type="button" id="fecharAvisoTela" aria-label="Fechar aviso">×</button>
-  </div>
-
   <main>
-    <!-- 1. Vitrine: ambiente grande pintado + os 4 ambientes na mesma cor + resumo da cor (js/vitrine.js) -->
-    <section class="vitrine" id="inicio" aria-label="Cor escolhida nos ambientes">
-      <div class="vitrine-foto">
-        <canvas id="telaGrande" width="742" height="504" aria-label="Ambiente pintado com a cor escolhida"></canvas>
-        <button type="button" class="ver-original" id="verOriginal">Segure para ver sem tinta</button>
-      </div>
-      <div class="vitrine-lado">
-        <div class="miniaturas" id="miniaturas" role="tablist" aria-label="Ambientes"></div>
-        <div class="cor-atual" id="corAtual"></div>
-      </div>
-    </section>
-
     <!-- 2. Explorar cores: cartela com filtros | monte sua cor (js/cartela.js, js/monte.js) -->
     <section class="secao" id="explorar" aria-labelledby="tituloExplorar">
       <div class="secao-topo">
@@ -131,31 +112,6 @@
       </div>
     </section>
 
-    <!-- 3. Comprar esta cor: linhas, acabamentos, bases, embalagens e preço (js/compra.js) -->
-    <section class="secao" id="compra" aria-labelledby="tituloCompra">
-      <div class="secao-topo">
-        <h2 id="tituloCompra">Onde comprar esta cor</h2>
-        <span class="contagem" id="compraResumo"></span>
-      </div>
-      <div id="opcoes" class="opcoes"></div>
-    </section>
-
-    <!-- 4. Calculadora de tinta (js/calculadora.js) -->
-    <section class="secao" id="calculadora" aria-labelledby="tituloCalc">
-      <div class="secao-topo">
-        <h2 id="tituloCalc">Quanto de tinta eu preciso?</h2>
-      </div>
-      <div class="calc" id="calc"></div>
-    </section>
-
-    <!-- 5. Comparativo das linhas (js/compra.js) -->
-    <section class="secao" id="linhas" aria-labelledby="tituloLinhas">
-      <div class="secao-topo">
-        <h2 id="tituloLinhas">Qual tinta escolher?</h2>
-      </div>
-      <p class="secao-texto">A mesma cor do tintométrico pode ser feita em linhas diferentes. A máquina escolhe sozinha a base certa (P, M ou C) para cada cor, então você só escolhe a tinta.</p>
-      <div class="tabela-rolagem"><table class="tabela-linhas" id="tabelaLinhas"></table></div>
-    </section>
     <!-- 6. Sobre a loja (texto fixo) -->
     <section class="secao" id="sobre" aria-labelledby="tituloSobre">
       <div class="secao-topo">
@@ -232,10 +188,7 @@
   <script src="js/app.js"></script>
   <script src="js/busca.js"></script>
   <script src="js/pintura.js"></script>
-  <script src="js/vitrine.js"></script>
   <script src="js/carrossel.js"></script>
-  <script src="js/compra.js"></script>
-  <script src="js/calculadora.js"></script>
   <script src="js/cartela.js"></script>
   <script src="js/monte.js"></script>
   <script src="js/inicio.js"></script>

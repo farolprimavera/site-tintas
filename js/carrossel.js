@@ -1,7 +1,7 @@
 /* carrossel.js — "Inspire-se": um slide por ambiente, cada um pintado com uma tinta
    diferente (sorteada a cada visita entre as latas prontas com estoque). Igual ao
    carrossel do site de pisos: setas, pontinhos, arrastar no celular e troca sozinha
-   depois de 10 s sem interação. Clicar no slide leva a cor e o ambiente para o simulador.
+   depois de 10 s sem interação. Clicar no slide abre a página do ambiente com a cor.
    A pintura é a mesma do simulador (js/pintura.js), feita no navegador. */
 
 const INTERVALO_CARROSSEL = 10000;
@@ -38,7 +38,7 @@ const Carrossel = {
 
     const slides = Carrossel.slides.map(({ amb, c }, i) => {
       const a = D.ambientes[amb];
-      return `<a class="slide" href="#cor=${encodeURIComponent(c.id)}&amb=${amb}" data-i="${i}" aria-hidden="${i !== 0}" tabindex="${i === 0 ? 0 : -1}"
+      return `<a class="slide" href="${App.urlAmbiente(c, amb)}" data-i="${i}" aria-hidden="${i !== 0}" tabindex="${i === 0 ? 0 : -1}"
           aria-label="${esc(a.nome)} pintada de ${esc(c.nome)} — ver no simulador">
         <canvas width="${a.largura}" height="${a.altura}" aria-hidden="true"></canvas>
         <span class="slide-legenda">
@@ -59,14 +59,8 @@ const Carrossel = {
         <div class="pontos">${pontos}</div>
       </div>`;
 
-    el.querySelectorAll(".slide").forEach((s) => s.addEventListener("click", (ev) => {
-      ev.preventDefault();
-      if (Carrossel.arrastou) return;
-      const { amb, c } = Carrossel.slides[+s.dataset.i];
-      App.ambiente = amb;
-      App.escolher(c);
-      irPara(document.querySelector(".vitrine"));
-    }));
+    // clique abre a página do ambiente (link normal); depois de arrastar, não abre
+    el.querySelectorAll(".slide").forEach((s) => s.addEventListener("click", (ev) => { if (Carrossel.arrastou) ev.preventDefault(); }));
     el.querySelector(".seta-ant").addEventListener("click", () => Carrossel.ir(Carrossel.atual - 1));
     el.querySelector(".seta-prox").addEventListener("click", () => Carrossel.ir(Carrossel.atual + 1));
     el.querySelectorAll(".ponto").forEach((b) => b.addEventListener("click", () => Carrossel.ir(+b.dataset.i)));

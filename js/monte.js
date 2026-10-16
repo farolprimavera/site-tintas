@@ -54,7 +54,7 @@ const Monte = {
         b.title = `${c.nome} · cor ${c.tinto.cod}`;
         b.setAttribute("aria-label", b.title);
         b.setAttribute("aria-pressed", App.cor === c);
-        b.addEventListener("click", () => App.escolher(c, { doMonte: true }));
+        b.addEventListener("click", () => { if ($("telaGrande")) App.escolher(c, { doMonte: true }); else location.href = App.urlAmbiente(c); });
         G.appendChild(b);
         Monte.celulas.push([b, c]);
       });

@@ -63,7 +63,7 @@ const Busca = {
     Busca.itens = [
       ...tintas.map(([, l]) => ({ href: `produtos.html?q=${encodeURIComponent(l.nome)}`,
         html: `<span class="sug-icone" aria-hidden="true">🪣</span><span><b>${esc(l.nome)}</b><small>${l.tipo === "tintometrico" ? "Tintométrico Iquine" : "Lata pronta " + esc(l.marca)}</small></span>` })),
-      ...cores.map((c) => ({ href: `index.html#cor=${encodeURIComponent(c.id)}&amb=sala`,
+      ...cores.map((c) => ({ href: `ambiente.html#cor=${encodeURIComponent(c.id)}&amb=sala`,
         html: `<span class="sug-cor" style="background:${c.hex}" aria-hidden="true"></span><span><b>${esc(c.nome)}</b><small>${esc(codigoTexto(c) || c.marca)}${c.esgotada ? " · sem estoque" : ""}</small></span>` })),
     ];
     const caixa = $("buscaSugestoes");

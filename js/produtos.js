@@ -1,6 +1,6 @@
 /* produtos.js — página "Produtos": uma ficha por linha de tinta (latas prontas Coral e
    Iquine e tintométrico Iquine), com foto, ficha técnica, embalagens, preço "a partir de"
-   e as cores. Cada cor abre o simulador já pintado (index.html#cor=...).
+   e as cores. Cada cor abre o simulador já pintado (ambiente.html#cor=...).
    Usa só window.TINTAS_SITE (dados/tintas.js) e as utilidades de js/app.js. */
 
 const ICONES_ONDE = {
@@ -38,8 +38,13 @@ const Produtos = {
         f.cores.push(c);
         pl.produtos.forEach((p) => {
           if (p.foto) f.fotos.set(p.foto, (f.fotos.get(p.foto) || 0) + 1);
-          const e = f.embalagens.get(p.embalagem) || { litros: p.litros || 0, ok: false };
-          if (!p.sem_estoque) e.ok = true;
+          const e = f.embalagens.get(p.embalagem) || { litros: p.litros || 0, ok: false, preco: null };
+          if (!p.sem_estoque) {
+            e.ok = true;
+            // guarda os preços do produto mais barato desta embalagem (à vista, a prazo e oferta)
+            const ef = p.oferta || p.vista;
+            if (ef && (!e.preco || ef < (e.preco.oferta || e.preco.vista))) e.preco = { vista: p.vista, prazo: p.prazo, oferta: p.oferta };
+          }
           f.embalagens.set(p.embalagem, e);
           if (!p.sem_estoque && (p.oferta || p.vista)) f.precos.push(p.oferta || p.vista);
         });
@@ -50,8 +55,8 @@ const Produtos = {
           const b = D.bases[bi];
           const f = ficha(b.linha);
           if (!vistas.has(b.linha)) { f.cores.push(c); vistas.add(b.linha); }
-          const e = f.embalagens.get(b.embalagem) || { litros: b.litros || 0, ok: false };
-          if (!esg) { e.ok = true; f.precos.push(preco); }
+          const e = f.embalagens.get(b.embalagem) || { litros: b.litros || 0, ok: false, min: Infinity };
+          if (!esg) { e.ok = true; f.precos.push(preco); e.min = Math.min(e.min, preco); }
           f.embalagens.set(b.embalagem, e);
         });
       }
@@ -103,6 +108,8 @@ const Produtos = {
 
     // "ver todas as cores" e "ver menos" (um ouvinte só para a lista inteira)
     $("listaProdutos").addEventListener("click", (e) => {
+      const emb = e.target.closest("[data-emb]");
+      if (emb) { Produtos.mostrarEmbalagem(emb); return; }
       const b = e.target.closest("[data-abrir]");
       if (!b) return;
       const card = b.closest(".ficha-produto");
@@ -128,6 +135,29 @@ const Produtos = {
       Procurando uma cor? Use a busca do topo ou veja a <a class="link" href="index.html#explorar">cartela de cores</a>.</p>`;
   },
 
+  // preço da embalagem escolhida: à vista, a prazo e oferta (lata pronta) ou "a partir de" (tintométrico)
+  mostrarEmbalagem(botao) {
+    const card = botao.closest(".ficha-produto");
+    const p = Produtos.lista.find((x) => x.id === card.dataset.linha);
+    const e = p && p.embalagens.get(botao.dataset.emb);
+    if (!e) return;
+    card.querySelectorAll("[data-emb]").forEach((b) => b.setAttribute("aria-pressed", b === botao));
+    const alvo = card.querySelector("[data-preco]");
+    const nome = esc(botao.dataset.emb);
+    if (!e.ok) { alvo.innerHTML = `<span class="emb-nome">${nome}</span> <span class="selo cinza">Sem estoque</span>`; return; }
+    if (p.grupo === "tinto") {
+      alvo.innerHTML = `<span class="emb-nome">${nome}</span><div class="emb-precos"><span><small>a partir de</small><b>${brl(e.min)}</b></span></div>
+        <small class="emb-obs">O preço muda com a cor (quantidade de corante).</small>`;
+      return;
+    }
+    const pr = e.preco || {};
+    const itens = [];
+    if (pr.oferta) itens.push(`<span class="oferta"><small>Oferta</small><b>${brl(pr.oferta)}</b></span>`);
+    if (pr.vista) itens.push(`<span${pr.oferta ? ' class="riscado"' : ""}><small>À vista</small><b>${brl(pr.vista)}</b></span>`);
+    if (pr.prazo && pr.prazo !== pr.vista) itens.push(`<span><small>A prazo</small><b>${brl(pr.prazo)}</b></span>`);
+    alvo.innerHTML = `<span class="emb-nome">${nome}</span><div class="emb-precos">${itens.join("") || '<span class="consulte">Consulte no balcão</span>'}</div>`;
+  },
+
   card(p) {
     const l = p.l;
     const tinto = p.grupo === "tinto";
@@ -148,10 +178,11 @@ const Produtos = {
         ? `<div class="ficha-foto"><img src="imagens/produtos/${esc(p.foto)}.webp" alt="Lata ${esc(l.nome)}" loading="lazy" width="180" height="180"></div>`
         : `<div class="ficha-foto"><span class="lata" style="background:${primeira ? primeira.hex : "#ddd"}"></span></div>`;
 
+    // embalagens: botões; ao tocar mostram os preços daquele tamanho
     const embalagens = [...p.embalagens.entries()].sort((a, b) => a[1].litros - b[1].litros)
-      .map(([nome, e]) => `<span class="emb${e.ok ? "" : " fora"}">${esc(nome)}</span>`).join("");
+      .map(([nome, e]) => `<button type="button" class="emb${e.ok ? "" : " fora"}" data-emb="${esc(nome)}" aria-pressed="false">${esc(nome)}</button>`).join("");
 
-    const cores = amostras.map((c) => `<a class="bolinha${c.esgotada ? " fora" : ""}" href="index.html#cor=${encodeURIComponent(c.id)}&amb=sala"
+    const cores = amostras.map((c) => `<a class="bolinha${c.esgotada ? " fora" : ""}" href="ambiente.html#cor=${encodeURIComponent(c.id)}&amb=sala"
       style="background:${c.hex}" title="${esc(c.nome)}${c.esgotada ? " (sem estoque)" : ""}"><span class="sr">${esc(c.nome)}</span></a>`).join("");
 
     const verTodas = tinto
@@ -160,7 +191,7 @@ const Produtos = {
 
     const whats = App.whatsapp(`Olá! Quero saber mais sobre a tinta ${l.nome}${tinto ? " (tintométrico Iquine)" : ` ${l.marca}`}.`);
 
-    return `<article class="ficha-produto${tinto ? " tinto" : ""}">
+    return `<article class="ficha-produto${tinto ? " tinto" : ""}" data-linha="${esc(p.id)}">
       ${foto}
       <div class="ficha-corpo">
         <p class="ficha-marca">${tinto ? "Tintométrico Iquine" : `Lata pronta ${esc(l.marca)}`}${l.categoria ? ` · ${esc(l.categoria)}` : ""}</p>
@@ -171,17 +202,17 @@ const Produtos = {
           ${l.acabamento ? `<span class="atributo">Acabamento: <b>${esc(l.acabamento)}</b></span>` : ""}
           ${l.rendimento ? `<span class="atributo">Rende <b>~${num(l.rendimento)} m²/L</b> por demão</span>` : ""}
         </div>
-        <div class="ficha-preco">${p.aPartir != null
+        <div class="ficha-preco" data-preco>${p.aPartir != null
           ? `<small>a partir de</small> <b>${brl(p.aPartir)}</b>`
           : '<span class="selo cinza">Sem estoque</span>'}</div>
-        <div class="ficha-bloco"><span class="passo">Embalagens</span><div class="embs">${embalagens}</div></div>
+        <div class="ficha-bloco"><span class="passo">Embalagens <small>toque para ver o preço</small></span><div class="embs">${embalagens}</div></div>
         <div class="ficha-bloco">
           <span class="passo">${tinto ? "Algumas cores" : `${p.cores.length} ${p.cores.length === 1 ? "cor" : "cores"}`}</span>
           <div class="bolinhas">${cores}</div>
           ${verTodas}
         </div>
         <div class="ficha-acoes">
-          ${primeira ? `<a class="botao primario" href="index.html#cor=${encodeURIComponent(primeira.id)}&amb=sala">Ver no ambiente</a>` : ""}
+          ${primeira ? `<a class="botao primario" href="ambiente.html#cor=${encodeURIComponent(primeira.id)}&amb=sala">Ver no ambiente</a>` : ""}
           ${whats ? `<a class="botao whats" href="${esc(whats)}" target="_blank" rel="noopener">Perguntar no WhatsApp</a>` : ""}
         </div>
       </div>

@@ -103,7 +103,8 @@ const Cartela = {
         <span class="amostra-nome">${esc(c.nome)}</span>
         <span class="amostra-cod">${esc(c.prontas.length ? c.marca : "Tintométrico")}${c.codigo ? " · " + esc(c.codigo) : ""}</span>
         ${c.aPartir ? `<span class="amostra-preco">a partir de ${brl(c.aPartir)}</span>` : ""}`;
-      b.addEventListener("click", () => App.escolher(c, { daCartela: true }));
+      // tocou na cor: abre a página do ambiente já pintada (na própria página do ambiente, só troca a cor)
+      b.addEventListener("click", () => { if ($("telaGrande")) App.escolher(c, { daCartela: true }); else location.href = App.urlAmbiente(c); });
       frag.appendChild(b);
     });
     G.appendChild(frag);

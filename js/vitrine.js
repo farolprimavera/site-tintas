@@ -56,6 +56,19 @@ const Vitrine = {
     });
   },
 
+  // nenhuma cor escolhida ainda: paredes brancas e um convite para escolher
+  semCor() {
+    $("corAtual").innerHTML = `
+      <div class="cor-topo">
+        <span class="amostra" style="background:#fff" aria-hidden="true"></span>
+        <div>
+          <h1 class="cor-nome">Escolha uma cor</h1>
+          <p class="cor-origem">Toque numa cor na faixa embaixo da foto para pintar as paredes.</p>
+        </div>
+      </div>
+      <div class="cor-acoes"><a class="botao" href="index.html#explorar">Ver a cartela completa</a></div>`;
+  },
+
   resumo(c) {
     const chips = [NOME_TOM[c.tom], ...c.familias.map((f) => NOME_FAMILIA[f]), ...c.sensacoes.slice(0, 2).map((s) => NOME_SENSACAO[s])]
       .filter(Boolean).map((t) => `<span class="chip-info">${esc(t)}</span>`).join("");

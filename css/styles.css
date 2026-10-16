@@ -908,7 +908,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 @media (min-width: 980px) {
-  .vitrine { grid-template-columns: 1.7fr 1fr; padding: 1rem 1rem 0; align-items: start; }
+  .vitrine { grid-template-columns: 1.7fr 1fr; grid-template-areas: "foto lado" "faixa lado"; padding: 1rem 1rem 0; align-items: start; }
+  .vitrine-foto { grid-area: foto; }
+  .faixa-cores { grid-area: faixa; padding: 0; }
+  .vitrine-lado { grid-area: lado; }
   .vitrine-foto { border-radius: var(--raio); overflow: hidden; box-shadow: var(--sombra); }
   .vitrine-lado { padding: 0; }
   .miniaturas { grid-template-columns: repeat(2, 1fr); }
@@ -1280,6 +1283,129 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .grade-ofertas { grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); }
   .oferta { grid-template-columns: 160px 1fr; }
 }
+
+/* ---------- Página do ambiente: faixa de cores embaixo da foto ---------- */
+
+.faixa-cores { min-width: 0; padding: 0 1rem; }
+.faixa-topo { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.4rem 1rem; margin-bottom: 0.4rem; }
+.faixa-abas { display: flex; gap: 0.3rem; overflow-x: auto; scrollbar-width: none; }
+.faixa-abas button {
+  flex: none;
+  min-height: 36px;
+  padding: 0.25rem 0.8rem;
+  border: 1px solid var(--linha);
+  border-radius: 999px;
+  background: var(--superficie);
+  color: var(--texto);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.faixa-abas button[aria-selected="true"] { background: var(--verde); border-color: var(--verde); color: #fff; }
+.faixa-abas button[hidden] { display: none; }
+.faixa-todas { font-size: 0.85rem; }
+.faixa-trilho { position: relative; display: flex; align-items: center; gap: 0.3rem; }
+.faixa-lista {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  padding: 0.3rem 0.1rem 0.5rem;
+}
+.faixa-cor {
+  flex: none;
+  width: 76px;
+  display: grid;
+  justify-items: center;
+  gap: 0.25rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--texto);
+  cursor: pointer;
+  scroll-snap-align: start;
+}
+.faixa-cor span {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+  transition: transform 0.12s;
+}
+.faixa-cor:hover span { transform: translateY(-2px); }
+.faixa-cor[aria-pressed="true"] span { outline: 3px solid var(--verde); outline-offset: 2px; }
+.faixa-cor small { width: 100%; font-size: 0.7rem; line-height: 1.15; text-align: center; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.faixa-seta {
+  flex: none;
+  width: 2.2rem;
+  height: 2.2rem;
+  border: 1px solid var(--linha);
+  border-radius: 50%;
+  background: var(--superficie);
+  color: var(--texto);
+  font-size: 1.5rem;
+  line-height: 1;
+  padding-bottom: 0.15rem;
+  cursor: pointer;
+  box-shadow: var(--sombra);
+}
+.faixa-seta:hover { border-color: var(--verde-texto); color: var(--verde-texto); }
+@media (max-width: 599px) { .faixa-seta { display: none; } }
+
+/* calculadora sem medidas ainda */
+.calc-vazio { padding: 0.9rem; border-radius: 8px; background: var(--peca-fundo); }
+.calc-vazio p { margin: 0.3rem 0 0; color: var(--suave); font-size: 0.9rem; }
+
+/* ---------- Botão flutuante "voltar ao topo" ---------- */
+
+.ir-topo {
+  position: fixed;
+  right: 1rem;
+  bottom: calc(1rem + env(safe-area-inset-bottom));
+  z-index: 42;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 0.05rem;
+  width: 3.4rem;
+  height: 3.4rem;
+  border: 0;
+  border-radius: 50%;
+  background: var(--verde);
+  color: #fff;
+  font-size: 0.66rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  animation: aparecer 0.2s ease-out;
+}
+.ir-topo svg { width: 1.3rem; height: 1.3rem; }
+.ir-topo:hover { background: var(--verde-escuro); }
+.ir-topo[hidden] { display: none; }
+@keyframes aparecer { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+/* no celular a barrinha da cor ocupa o rodapé da tela: o botão fica acima dela */
+@media (max-width: 760px) { .ir-topo { bottom: calc(5rem + env(safe-area-inset-bottom)); right: 0.75rem; } }
+body.com-detalhe .ir-topo { display: none; }
+
+/* ---------- Produtos: embalagens clicáveis com os preços ---------- */
+
+.emb { background: var(--superficie); color: var(--texto); cursor: pointer; min-height: 32px; font: inherit; font-size: 0.8rem; font-weight: 600; }
+.emb:hover { border-color: var(--verde-texto); color: var(--verde-texto); }
+.emb[aria-pressed="true"] { background: var(--verde); border-color: var(--verde); color: #fff; }
+.ficha-bloco .passo small { text-transform: none; letter-spacing: 0; font-weight: 500; margin-left: 0.3rem; }
+.emb-nome { display: block; font-weight: 700; font-size: 0.85rem; color: var(--suave); margin-bottom: 0.2rem; }
+.emb-precos { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; }
+.emb-precos > span { display: grid; line-height: 1.15; }
+.emb-precos small { font-size: 0.72rem; color: var(--suave); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; }
+.emb-precos b { font-size: 1.25rem; font-weight: 800; color: var(--texto); font-variant-numeric: tabular-nums; }
+.emb-precos .oferta small, .emb-precos .oferta b { color: var(--vermelho-texto); }
+.emb-precos .riscado b { text-decoration: line-through; color: var(--suave); font-size: 1rem; font-weight: 600; }
+.emb-obs { display: block; margin-top: 0.2rem; color: var(--suave); font-size: 0.75rem; }
 
 /* ---------- Rodapé ---------- */
 

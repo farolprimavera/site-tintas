@@ -3,9 +3,9 @@
    embalagens mais barata da linha escolhida, para a cor escolhida. */
 
 const Calc = {
-  paredes: [{ l: 4, a: 2.7 }, { l: 3, a: 2.7 }],
-  portas: 1,
-  janelas: 1,
+  paredes: [{ l: "", a: "" }], // começa zerada: o cliente preenche e soma mais paredes se quiser
+  portas: "",
+  janelas: "",
   porta: 0.8 * 2.1,
   janela: 1.2 * 1.0,
   demaos: null,
@@ -68,9 +68,9 @@ const Calc = {
           <div id="calcParedes">${Calc.paredes.map((p, i) => `
             <div class="parede-linha">
               <span class="parede-n">${i + 1}</span>
-              <label>Largura <input type="number" inputmode="decimal" min="0" step="0.1" value="${p.l}" data-i="${i}" data-k="l"></label>
+              <label>Largura <input type="text" inputmode="decimal" autocomplete="off" value="${esc(p.l)}" placeholder="ex.: 4" data-i="${i}" data-k="l"></label>
               <span aria-hidden="true">×</span>
-              <label>Altura <input type="number" inputmode="decimal" min="0" step="0.1" value="${p.a}" data-i="${i}" data-k="a"></label>
+              <label>Altura <input type="text" inputmode="decimal" autocomplete="off" value="${esc(p.a)}" placeholder="ex.: 2,7" data-i="${i}" data-k="a"></label>
               ${Calc.paredes.length > 1 ? `<button type="button" class="remover" data-rem="${i}" aria-label="Remover parede ${i + 1}">×</button>` : ""}
             </div>`).join("")}
           </div>
@@ -78,8 +78,8 @@ const Calc = {
         </fieldset>
         <fieldset class="calc-desc">
           <legend>Descontar</legend>
-          <label>Portas <input type="number" inputmode="numeric" min="0" step="1" value="${Calc.portas}" id="calcPortas"><small>0,80 × 2,10 m cada</small></label>
-          <label>Janelas <input type="number" inputmode="numeric" min="0" step="1" value="${Calc.janelas}" id="calcJanelas"><small>1,20 × 1,00 m cada</small></label>
+          <label>Portas <input type="number" inputmode="numeric" min="0" step="1" value="${esc(Calc.portas)}" placeholder="0" id="calcPortas"><small>0,80 × 2,10 m cada</small></label>
+          <label>Janelas <input type="number" inputmode="numeric" min="0" step="1" value="${esc(Calc.janelas)}" placeholder="0" id="calcJanelas"><small>1,20 × 1,00 m cada</small></label>
         </fieldset>
         <fieldset class="calc-desc">
           <legend>Tinta</legend>
@@ -93,13 +93,18 @@ const Calc = {
 
     const R = $("calc");
     R.querySelectorAll("[data-k]").forEach((inp) => inp.addEventListener("input", () => {
-      Calc.paredes[+inp.dataset.i][inp.dataset.k] = Math.max(0, parseFloat(inp.value.replace(",", ".")) || 0);
+      Calc.paredes[+inp.dataset.i][inp.dataset.k] = inp.value;
       Calc.resultado(ops);
     }));
     R.querySelectorAll("[data-rem]").forEach((b) => b.addEventListener("click", () => { Calc.paredes.splice(+b.dataset.rem, 1); Calc.render(); }));
-    $("calcMais").addEventListener("click", () => { Calc.paredes.push({ l: 3, a: 2.7 }); Calc.render(); });
-    $("calcPortas").addEventListener("input", (e) => { Calc.portas = Math.max(0, parseInt(e.target.value) || 0); Calc.resultado(ops); });
-    $("calcJanelas").addEventListener("input", (e) => { Calc.janelas = Math.max(0, parseInt(e.target.value) || 0); Calc.resultado(ops); });
+    $("calcMais").addEventListener("click", () => {
+      Calc.paredes.push({ l: "", a: "" });
+      Calc.render();
+      const novas = $("calcParedes").querySelectorAll('[data-k="l"]');
+      novas[novas.length - 1].focus();
+    });
+    $("calcPortas").addEventListener("input", (e) => { Calc.portas = e.target.value; Calc.resultado(ops); });
+    $("calcJanelas").addEventListener("input", (e) => { Calc.janelas = e.target.value; Calc.resultado(ops); });
     $("calcDemaos").addEventListener("input", (e) => { Calc.demaos = Math.min(4, Math.max(1, parseInt(e.target.value) || 1)); Calc.resultado(ops); });
     $("calcLinha").addEventListener("change", (e) => { Calc.linha = e.target.value; Calc.demaos = null; Calc.render(); });
     Calc.resultado(ops);
@@ -107,8 +112,14 @@ const Calc = {
 
   resultado(ops) {
     const c = App.cor, op = ops.get(Calc.linha), Rz = $("calcResultado");
-    const bruta = Calc.paredes.reduce((s, p) => s + p.l * p.a, 0);
-    const area = Math.max(0, bruta - Calc.portas * Calc.porta - Calc.janelas * Calc.janela);
+    const n = (v) => Math.max(0, parseFloat(String(v).replace(",", ".")) || 0);
+    const bruta = Calc.paredes.reduce((s, p) => s + n(p.l) * n(p.a), 0);
+    const area = Math.max(0, bruta - Math.floor(n(Calc.portas)) * Calc.porta - Math.floor(n(Calc.janelas)) * Calc.janela);
+    if (bruta <= 0) {
+      Rz.innerHTML = `<div class="calc-vazio"><b>Preencha a largura e a altura da parede</b>
+        <p>Use metros (ex.: 4 × 2,7). Tem mais de uma parede? Toque em “+ Adicionar parede” e a conta soma tudo.</p></div>`;
+      return;
+    }
     if (!op) { Rz.innerHTML = '<p class="vazio">Esta cor não tem tinta disponível para calcular.</p>'; return; }
     const l = op.l, demaos = Calc.demaos || l.demaos || 2;
     if (!l.rendimento) {

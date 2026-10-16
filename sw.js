@@ -24,7 +24,7 @@
    Com versão nova, o site mostra "Nova versão disponível. Atualizar".
    ========================================================================== */
 
-const VERSAO = "tintas-v3";
+const VERSAO = "tintas-v4";
 const CASCA = `${VERSAO}-casca`;
 const IMAGENS = `${VERSAO}-imagens`;
 const MAX_IMAGENS = 120;
@@ -32,6 +32,7 @@ const MAX_IMAGENS = 120;
 const ARQUIVOS_CASCA = [
   "./",
   "./index.html",
+  "./ambiente.html",
   "./produtos.html",
   "./ofertas.html",
   "./tintometrico.html",
@@ -44,6 +45,7 @@ const ARQUIVOS_CASCA = [
   "./js/pintura.js",
   "./js/vitrine.js",
   "./js/carrossel.js",
+  "./js/ambiente.js",
   "./js/compra.js",
   "./js/calculadora.js",
   "./js/cartela.js",

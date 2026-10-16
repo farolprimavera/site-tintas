@@ -101,9 +101,13 @@ const App = {
     if (p.get("amb") && D.ambientes[p.get("amb")]) App.ambiente = p.get("amb");
     return POR_ID.get(p.get("cor") || "");
   },
+  // endereço da página do ambiente com a cor (para links e para mandar no WhatsApp)
+  urlAmbiente(c, amb) {
+    return `ambiente.html#cor=${encodeURIComponent(c.id)}&amb=${amb || App.ambiente}`;
+  },
   linkDaCor(c) {
-    const base = location.href.split("#")[0];
-    return `${base}#cor=${encodeURIComponent(c.id)}&amb=${App.ambiente}`;
+    const pasta = location.href.split("#")[0].split("?")[0].replace(/[^/]*$/, "");
+    return pasta + App.urlAmbiente(c);
   },
   whatsapp(texto) {
     return WHATSAPP ? `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(texto)}` : "";
@@ -153,3 +157,21 @@ document.querySelectorAll(".menu a[data-secao]").forEach((a) => a.addEventListen
   if (a.dataset.secao === "inicio") window.scrollTo({ top: 0, behavior: "smooth" });
   else irPara(alvo);
 }));
+
+/* ---------- botão flutuante "voltar ao topo" (todas as páginas) ---------- */
+(function () {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.className = "ir-topo";
+  b.hidden = true;
+  b.setAttribute("aria-label", "Voltar ao topo da página");
+  b.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Topo</span>';
+  b.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+  document.body.appendChild(b);
+  let agendado = false;
+  window.addEventListener("scroll", () => {
+    if (agendado) return;
+    agendado = true;
+    requestAnimationFrame(() => { b.hidden = window.scrollY < 500; agendado = false; });
+  }, { passive: true });
+})();

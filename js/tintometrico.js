@@ -163,7 +163,7 @@ const Tinto = {
       </div>
 
       <div class="det-acoes">
-        <a class="botao primario" href="index.html#cor=${encodeURIComponent(c.id)}&amb=sala">Ver nos ambientes e calcular</a>
+        <a class="botao primario" href="ambiente.html#cor=${encodeURIComponent(c.id)}&amb=sala">Ver nos ambientes e calcular</a>
         ${whats ? `<a class="botao whats" href="${esc(whats)}" target="_blank" rel="noopener">Pedir no WhatsApp</a>` : ""}
       </div>
       <p class="det-nota">No balcão, peça a <b>cor Iquine ${esc(c.tinto.cod)}</b>: a máquina prepara na hora. As cores da tela são aproximadas.</p>`;
