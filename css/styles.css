@@ -934,6 +934,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 .sobre-texto p { margin: 0 0 0.6rem; }
 .sobre-texto p:last-child { margin-bottom: 0; color: var(--suave); }
+.sobre-texto p.sobre-chamada { font-weight: 800; color: var(--verde-texto); }
 .sobre-itens { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 0.6rem; }
 .sobre-itens li {
   display: grid;
@@ -948,6 +949,73 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 @media (min-width: 900px) {
   .sobre { grid-template-columns: 1.1fr 1fr; align-items: start; }
   .sobre-itens { grid-template-columns: 1fr 1fr; }
+}
+
+/* fotos da loja (embaixo do "Sobre"): faixa de fotos pequenas */
+.fotos-loja { display: flex; align-items: center; gap: 0.4rem; margin-top: 1.25rem; }
+.fotos-trilho {
+  flex: 1;
+  min-width: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0.2rem 0.1rem 0.5rem;
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+}
+.fotos-trilho li { flex: none; width: 210px; scroll-snap-align: start; }
+.foto-loja {
+  display: grid;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: var(--raio);
+  overflow: hidden;
+  background: var(--superficie);
+  box-shadow: var(--sombra);
+  color: var(--texto);
+  text-align: left;
+  cursor: zoom-in;
+}
+.foto-loja img { width: 100%; height: 150px; object-fit: cover; transition: transform 0.3s; }
+.foto-loja:hover img { transform: scale(1.04); }
+.foto-loja span { padding: 0.45rem 0.6rem; font-size: 0.82rem; font-weight: 600; }
+@media (max-width: 599px) {
+  .fotos-trilho li { width: 160px; }
+  .foto-loja img { height: 120px; }
+}
+
+.foto-ampliada {
+  width: min(92vw, 900px);
+  max-height: 92vh;
+  padding: 0;
+  border: 0;
+  border-radius: var(--raio);
+  background: var(--superficie);
+  color: var(--texto);
+  overflow: hidden;
+}
+.foto-ampliada::backdrop { background: rgba(0, 0, 0, 0.75); }
+.foto-ampliada img { display: block; width: 100%; max-height: calc(92vh - 3rem); object-fit: contain; background: #000; }
+.foto-ampliada p { margin: 0; padding: 0.7rem 1rem; font-weight: 600; }
+.foto-ampliada .detalhe-fechar { display: block; }
+
+/* ---------- Como chegar (mapa) ---------- */
+.mapa { display: grid; background: var(--superficie); border-radius: var(--raio); box-shadow: var(--sombra); overflow: hidden; }
+.mapa-frame { display: block; width: 100%; height: 280px; border: 0; background: var(--foto-fundo); }
+.mapa-info { display: grid; gap: 0.6rem; align-content: center; padding: 1rem 1.1rem 1.2rem; }
+.mapa-info p { margin: 0; }
+.mapa-end { line-height: 1.5; }
+.mapa-hora { color: var(--suave); font-size: 0.92rem; }
+.mapa-botoes { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.3rem; }
+.mapa-botoes .botao { flex: 1 1 auto; }
+@media (min-width: 820px) {
+  .mapa { grid-template-columns: 1.6fr 1fr; }
+  .mapa-frame { height: 340px; }
+  .mapa-info { padding: 1.5rem; }
+  .mapa-botoes { flex-direction: column; }
 }
 
 /* ---------- Página de produtos ---------- */
@@ -1378,7 +1446,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   gap: 0.05rem;
   width: 3.4rem;
   height: 3.4rem;
-  border: 0;
+  border: 2px solid #fff; /* contorno branco: aparece também em cima do rodapé verde */
   border-radius: 50%;
   background: var(--verde);
   color: #fff;
@@ -1426,12 +1494,23 @@ body.com-detalhe .ir-topo { display: none; }
   margin: 0 auto;
   padding: 2rem 1rem 1.5rem;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
-  gap: 1.5rem;
+  gap: 1.75rem;
+}
+@media (min-width: 720px) {
+  .rodape-conteudo { grid-template-columns: 1.3fr 1fr 1fr; gap: 2rem; }
 }
 
+/* cada bloco desce: título e, embaixo, um item por linha */
+.rodape-bloco { display: grid; align-content: start; gap: 0.6rem; justify-items: start; }
+.rodape-lista { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.45rem; }
+.rodape-lista a { display: inline-flex; align-items: flex-start; gap: 0.5rem; text-decoration: none; font-size: 1rem; }
+.rodape-lista a:hover span { text-decoration: underline; }
+.rodape-lista svg { width: 1.2rem; height: 1.2rem; margin-top: 0.1rem; fill: none; opacity: 0.85; }
+.quebra { overflow-wrap: anywhere; }
+.rodape-bloco p { line-height: 1.6; }
+
 .rodape h2 {
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
