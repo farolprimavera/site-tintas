@@ -881,6 +881,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 .monte-escolha[hidden] { display: none; }
 .monte-escolha .amostra { width: 48px; height: 48px; }
+.monte-previa { width: 150px; height: auto; border-radius: 8px; flex: none; }
+@media (max-width: 599px) {
+  .monte-escolha { flex-wrap: wrap; }
+  .monte-previa { width: 100%; }
+}
 .monte-escolha div { flex: 1; display: flex; flex-direction: column; line-height: 1.25; }
 .monte-escolha small { color: var(--suave); }
 

@@ -8,6 +8,7 @@ const Monte = {
   LUZ: [93, 86, 78, 70, 61, 52, 43, 34, 25],
   celulas: [],
   montado: false,
+  atual: null,   // cor tocada no gradiente (na página inicial não há cor escolhida no App)
 
   montar() {
     $("monte").innerHTML = `
@@ -53,8 +54,9 @@ const Monte = {
         b.style.background = c.hex;
         b.title = `${c.nome} · cor ${c.tinto.cod}`;
         b.setAttribute("aria-label", b.title);
-        b.setAttribute("aria-pressed", App.cor === c);
-        b.addEventListener("click", () => { if ($("telaGrande")) App.escolher(c, { doMonte: true }); else location.href = App.urlAmbiente(c); });
+        b.setAttribute("aria-pressed", (Monte.atual || App.cor) === c);
+        // tocar só escolhe (fica na página, como antes); o botão "Ver no ambiente" abre a página do ambiente
+        b.addEventListener("click", () => { if ($("telaGrande")) App.escolher(c, { doMonte: true }); else Monte.marcar(c); });
         G.appendChild(b);
         Monte.celulas.push([b, c]);
       });
@@ -62,14 +64,19 @@ const Monte = {
   },
 
   marcar(c) {
-    if (!Monte.montado) return;
+    if (!Monte.montado || !c) return;
+    Monte.atual = c;
     Monte.celulas.forEach(([b, x]) => b.setAttribute("aria-pressed", x === c));
     const E = $("monteEscolha");
     if (!c.tinto) { E.hidden = true; return; }
     E.hidden = false;
-    E.innerHTML = `<span class="amostra" style="background:${c.hex}"></span>
+    const naPagina = !!$("telaGrande"); // página do ambiente: a foto grande já mostra a cor
+    E.innerHTML = `${naPagina ? "" : `<canvas class="monte-previa" id="montePrevia" width="240" height="163" aria-label="Sala pintada com ${esc(c.nome)}"></canvas>`}
+      <span class="amostra" style="background:${c.hex}"></span>
       <div><b>${esc(c.nome)}</b><small>Cor Iquine ${esc(c.tinto.cod)}${c.aPartir ? " · a partir de " + brl(c.aPartir) : ""}</small></div>
-      <button type="button" class="botao primario" id="monteVer">Ver tinta e preço</button>`;
-    $("monteVer").addEventListener("click", () => irPara($("compra")));
+      ${naPagina ? `<button type="button" class="botao primario" id="monteVer">Ver tinta e preço</button>`
+                 : `<a class="botao primario" href="${App.urlAmbiente(c)}">Ver no ambiente</a>`}`;
+    if (naPagina) $("monteVer").addEventListener("click", () => irPara($("compra")));
+    else Pintura.pronto && Pintura.pronto.then(() => { const t = $("montePrevia"); if (t) Pintura.desenhar(t, "sala", c.hex); });
   },
 };
