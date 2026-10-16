@@ -124,17 +124,32 @@ function irPara(el) {
     try { localStorage.setItem("tema", raiz.dataset.tema); } catch (e) {}
   });
 
-  let fechado = false;
-  try { fechado = localStorage.getItem("avisoTela") === "1"; } catch (e) {}
-  $("avisoTela").hidden = fechado;
-  $("fecharAvisoTela").addEventListener("click", () => {
-    $("avisoTela").hidden = true;
-    try { localStorage.setItem("avisoTela", "1"); } catch (e) {}
-  });
+  // aviso de tela: só existe na página do simulador
+  if ($("avisoTela")) {
+    let fechado = false;
+    try { fechado = localStorage.getItem("avisoTela") === "1"; } catch (e) {}
+    $("avisoTela").hidden = fechado;
+    $("fecharAvisoTela").addEventListener("click", () => {
+      $("avisoTela").hidden = true;
+      try { localStorage.setItem("avisoTela", "1"); } catch (e) {}
+    });
+  }
 
   const a = D.atualizado || {};
   const partes = [];
   if (a.latas) partes.push(`latas prontas em ${a.latas}`);
   if (a.tintometrico) partes.push(`tintométrico em ${a.tintometrico}`);
-  if (partes.length) $("atualizado").textContent = `Preços atualizados: ${partes.join(" · ")}.`;
+  if (partes.length && $("atualizado")) $("atualizado").textContent = `Preços atualizados: ${partes.join(" · ")}.`;
 })();
+
+/* ---------- menu do topo ----------
+   Link com data-secao: se a seção está nesta página, rola até ela sem mexer no
+   endereço (o #cor= da cor escolhida continua lá). Se não está (ex.: "Sobre"
+   aberto na página de produtos), segue o link normal para index.html#sobre. */
+document.querySelectorAll(".menu a[data-secao]").forEach((a) => a.addEventListener("click", (e) => {
+  const alvo = document.getElementById(a.dataset.secao);
+  if (!alvo) return;
+  e.preventDefault();
+  if (a.dataset.secao === "inicio") window.scrollTo({ top: 0, behavior: "smooth" });
+  else irPara(alvo);
+}));

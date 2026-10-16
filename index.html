@@ -30,16 +30,66 @@
 <body>
   <header class="topo">
     <div class="topo-conteudo">
-      <a class="marca" href="#" aria-label="Farol da Primavera — início">
+      <a class="marca" href="index.html" aria-label="Farol da Primavera — início">
         <img src="marca/logo-farol-web.png" alt="Farol da Primavera Materiais de Construção" width="295" height="160">
       </a>
-      <button class="instalar" id="btnInstalar" type="button" hidden>📲 Instalar<span class="instalar-app"> app</span></button>
-      <button class="tema" id="tema" type="button" aria-label="Alternar modo escuro">
-        <svg class="lua" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a8.5 8.5 0 1 0 11.1 11.1z"/></svg>
-        <svg class="sol" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 1.5v2.5M12 20v2.5M1.5 12H4M20 12h2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>
-      </button>
+      <!-- menu: data-secao = rola até a seção nesta página (js/app.js); sem ela, abre o link -->
+      <nav class="menu" aria-label="Menu principal">
+        <a href="index.html#inicio" data-secao="inicio" aria-current="page">Início</a>
+        <a href="produtos.html">Produtos</a>
+        <a href="ofertas.html">Ofertas</a>
+        <a href="index.html#contato" data-secao="contato">Contato</a>
+        <a href="index.html#sobre" data-secao="sobre">Sobre nós</a>
+      </nav>
+      <!-- busca: sugere cores e tintas enquanto digita (js/busca.js); Enter abre a página de produtos -->
+      <form class="busca-topo" role="search" action="produtos.html" method="get" autocomplete="off">
+        <input type="search" name="q" id="buscaTopo" placeholder="O que você está procurando?" aria-label="Buscar cor ou tinta"
+          role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="buscaSugestoes">
+        <button type="submit" aria-label="Buscar">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M15.5 15.5L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+        <div class="busca-sugestoes" id="buscaSugestoes" role="listbox" hidden></div>
+      </form>
+      <div class="topo-acoes">
+        <button class="instalar" id="btnInstalar" type="button" hidden>📲 Instalar<span class="instalar-app"> app</span></button>
+        <button class="tema" id="tema" type="button" aria-label="Alternar modo escuro">
+          <svg class="lua" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20.5 14.6A8.5 8.5 0 0 1 9.4 3.5a8.5 8.5 0 1 0 11.1 11.1z"/></svg>
+          <svg class="sol" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 1.5v2.5M12 20v2.5M1.5 12H4M20 12h2.5M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>
+        </button>
+      </div>
     </div>
   </header>
+  <!-- vitrine da campanha (só na página inicial) -->
+  <section class="hero" aria-label="Campanha da loja">
+    <div class="hero-conteudo">
+      <img class="hero-img" src="marca/parede-loja-1440.webp" srcset="marca/parede-loja-800.webp 800w, marca/parede-loja-1440.webp 1440w"
+        sizes="(min-width: 1100px) calc(100vw - 320px), 100vw"
+        alt="O mascote da Farol da Primavera pintando a parede da loja: toda a loja em 3x sem juros" width="1440" height="590">
+      <aside class="hero-painel">
+        <ul class="hero-itens">
+          <li>
+            <span class="hero-icone" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="15" height="6" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M18 6h2.5v5H11v3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><rect x="9.5" y="14" width="3" height="7" rx="1" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></span>
+            <span><b>Tintas das melhores marcas</b>Coral e Iquine para levar na hora</span>
+          </li>
+          <li>
+            <span class="hero-icone" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3s-6 6.6-6 11a6 6 0 0 0 12 0c0-4.4-6-11-6-11z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 14.5a3 3 0 0 0 3 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+            <span><b>Sua cor feita na hora</b>No tintométrico Iquine da loja</span>
+          </li>
+          <li>
+            <span class="hero-icone" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.4-3 8-7 9.5-4-1.5-7-5.1-7-9.5V6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8.8 12.2l2.2 2.2 4.3-4.6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span><b>Qualidade e confiança</b>Atendimento de quem entende de obra</span>
+          </li>
+        </ul>
+        <a class="hero-botao" href="ofertas.html">Confira nossas ofertas <span aria-hidden="true">→</span></a>
+      </aside>
+    </div>
+  </section>
+
+  <!-- carrossel "Inspire-se": cada ambiente pintado com uma tinta (js/carrossel.js) -->
+  <section class="inspire" id="inspire" aria-labelledby="tituloInspire">
+    <h2 id="tituloInspire" class="inspire-titulo">Inspire-se: <span>cada ambiente com uma cor da loja</span></h2>
+    <div id="carrossel"></div>
+  </section>
 
   <!-- aviso de calibração de tela (js/app.js guarda se o cliente fechou) -->
   <div class="aviso-tela" id="avisoTela" hidden>
@@ -50,7 +100,7 @@
 
   <main>
     <!-- 1. Vitrine: ambiente grande pintado + os 4 ambientes na mesma cor + resumo da cor (js/vitrine.js) -->
-    <section class="vitrine" aria-label="Cor escolhida nos ambientes">
+    <section class="vitrine" id="inicio" aria-label="Cor escolhida nos ambientes">
       <div class="vitrine-foto">
         <canvas id="telaGrande" width="742" height="504" aria-label="Ambiente pintado com a cor escolhida"></canvas>
         <button type="button" class="ver-original" id="verOriginal">Segure para ver sem tinta</button>
@@ -105,9 +155,29 @@
       <p class="secao-texto">A mesma cor do tintométrico pode ser feita em linhas diferentes. A máquina escolhe sozinha a base certa (P, M ou C) para cada cor, então você só escolhe a tinta.</p>
       <div class="tabela-rolagem"><table class="tabela-linhas" id="tabelaLinhas"></table></div>
     </section>
+    <!-- 6. Sobre a loja (texto fixo) -->
+    <section class="secao" id="sobre" aria-labelledby="tituloSobre">
+      <div class="secao-topo">
+        <h2 id="tituloSobre">Sobre a Farol da Primavera</h2>
+      </div>
+      <div class="sobre">
+        <div class="sobre-texto">
+          <p>A Farol da Primavera é uma loja de materiais de construção na Av. Jornalista Moacir Padilha, 351.
+            Aqui você encontra o que precisa para a obra e a reforma: pisos e revestimentos, tintas e muito mais.</p>
+          <p>Este simulador mostra as tintas da loja aplicadas em ambientes, compara as linhas e calcula quanto comprar,
+            para você chegar no balcão já sabendo o que levar.</p>
+        </div>
+        <ul class="sobre-itens">
+          <li><b>Tintas Coral e Iquine</b><span>Latas prontas para levar na hora.</span></li>
+          <li><b>Tintométrico Iquine</b><span>Sua cor preparada na hora, na máquina da loja.</span></li>
+          <li><b>Atendimento pelo WhatsApp</b><span>Tire dúvidas e faça o pedido pelo (21) 2776-3391.</span></li>
+          <li><b>Ofertas no Instagram</b><span>Siga a @faroldaprimavera e acompanhe as lives de sábado.</span></li>
+        </ul>
+      </div>
+    </section>
   </main>
 
-  <footer class="rodape">
+  <footer class="rodape" id="contato">
     <div class="rodape-conteudo">
       <div class="rodape-bloco">
         <h2>Endereço</h2>
@@ -159,8 +229,10 @@
   <script src="dados/tintas.js"></script>
   <script src="dados/ambientes.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/busca.js"></script>
   <script src="js/pintura.js"></script>
   <script src="js/vitrine.js"></script>
+  <script src="js/carrossel.js"></script>
   <script src="js/compra.js"></script>
   <script src="js/calculadora.js"></script>
   <script src="js/cartela.js"></script>

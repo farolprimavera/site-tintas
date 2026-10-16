@@ -24,7 +24,7 @@
    Com versão nova, o site mostra "Nova versão disponível. Atualizar".
    ========================================================================== */
 
-const VERSAO = "tintas-v1";
+const VERSAO = "tintas-v2";
 const CASCA = `${VERSAO}-casca`;
 const IMAGENS = `${VERSAO}-imagens`;
 const MAX_IMAGENS = 120;
@@ -32,6 +32,8 @@ const MAX_IMAGENS = 120;
 const ARQUIVOS_CASCA = [
   "./",
   "./index.html",
+  "./produtos.html",
+  "./ofertas.html",
   "./site.webmanifest",
   "./css/styles.css",
   "./dados/tintas.js",
@@ -39,13 +41,19 @@ const ARQUIVOS_CASCA = [
   "./js/app.js",
   "./js/pintura.js",
   "./js/vitrine.js",
+  "./js/carrossel.js",
   "./js/compra.js",
   "./js/calculadora.js",
   "./js/cartela.js",
   "./js/monte.js",
   "./js/inicio.js",
   "./js/pwa.js",
+  "./js/produtos.js",
+  "./js/ofertas.js",
+  "./js/busca.js",
   "./marca/logo-farol-web.png",
+  "./marca/parede-loja-800.webp",
+  "./marca/parede-loja-1440.webp",
   "./icones/favicon.ico",
   "./icones/favicon.svg",
   "./icones/apple-touch-icon.png",

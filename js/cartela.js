@@ -43,6 +43,10 @@ const Cartela = {
       </div>
       <p class="contagem" id="contagemCores" aria-live="polite"></p>`;
 
+    // veio da busca do topo (index.html?q=gelo#explorar)
+    const q = new URLSearchParams(location.search).get("q");
+    if (q) { $("fBusca").value = q; Cartela.f.busca = semAcento(q.trim()); Cartela.f.uso = ""; $("fUso").value = ""; }
+
     let t;
     $("fBusca").addEventListener("input", (e) => { clearTimeout(t); t = setTimeout(() => { Cartela.f.busca = semAcento(e.target.value.trim()); Cartela.listar(true); }, 150); });
     const grupo = (attr, chave, unico) => $("filtros").querySelectorAll(`[data-${attr}]`).forEach((b) => b.addEventListener("click", () => {
