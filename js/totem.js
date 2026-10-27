@@ -1,4 +1,4 @@
-/* totem.js — modo totem: depois de um tempo sem ninguém mexer, volta para a
+/* totem.js — modo totem: depois de 2 minutos sem ninguém mexer, volta para a
    tela inicial (index.html), limpa e no topo.
 
    Só funciona no aparelho que foi marcado como totem, para não atrapalhar
@@ -10,10 +10,10 @@
    Nos últimos AVISO segundos aparece "Ainda está aí?" com um botão para
    continuar. Se ninguém tocar, o site volta ao início. Depois de voltar, o
    contador só recomeça quando alguém mexer de novo (não fica recarregando
-   à toa a cada 5 minutos). */
+   à toa a cada 2 minutos). */
 
 (() => {
-  const MINUTOS = 5;      // tempo parado até voltar ao início
+  const MINUTOS = 2;      // tempo parado até voltar ao início
   const AVISO = 15;       // segundos de aviso antes de voltar
   const CHAVE = "farol-totem";
   const INICIO = "index.html";
