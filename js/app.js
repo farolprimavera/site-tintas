@@ -105,8 +105,11 @@ const App = {
   urlAmbiente(c, amb) {
     return `ambiente.html#cor=${encodeURIComponent(c.id)}&amb=${amb || App.ambiente}`;
   },
+  // endereço publicado: aberto do disco (file://) ou em teste local, o link/QR aponta para o site no ar
+  SITE: "https://farolprimavera.github.io/site-tintas/",
   linkDaCor(c) {
-    const pasta = location.href.split("#")[0].split("?")[0].replace(/[^/]*$/, "");
+    const publicado = /^https?:$/.test(location.protocol) && !/^(localhost|127\.|192\.168\.|10\.)/.test(location.hostname);
+    const pasta = publicado ? location.href.split("#")[0].split("?")[0].replace(/[^/]*$/, "") : App.SITE;
     return pasta + App.urlAmbiente(c);
   },
   whatsapp(texto) {

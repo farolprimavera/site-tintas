@@ -29,6 +29,7 @@
     ligado = new URLSearchParams(location.search).get("totem") === "1";
   }
   if (!ligado) return;
+  document.documentElement.dataset.totem = "1"; // o CSS esconde o que não serve no totem (ex.: compartilhar)
 
   const espera = MINUTOS * 60 * 1000 - AVISO * 1000;
   let timer = null, contagem = null, aviso = null, mexeu = false;

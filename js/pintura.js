@@ -6,7 +6,10 @@
 
    Como pinta: a cor escolhida é multiplicada pela luz da foto (luminância
    do pixel ÷ "ref", o branco da parede). Assim sombras, cantos e a luz da
-   janela continuam aparecendo, como numa parede pintada de verdade. */
+   janela continuam aparecendo, como numa parede pintada de verdade.
+   "luz" é a cor da luz do ambiente (a parede branca da foto é levemente
+   quente): a tinta recebe a mesma luz, senão cinzas e brancos parecem
+   azulados no meio dos móveis e do piso. */
 
 const Pintura = {
   amb: {},       // id → { W, H, base, lum, alpha, ref }
@@ -51,7 +54,7 @@ const Pintura = {
         }
         alpha[y * W + x] = s / k;
       }
-      Pintura.amb[id] = { W, H, base, lum, alpha, ref: info.ref || 230, saida: new ImageData(W, H) };
+      Pintura.amb[id] = { W, H, base, lum, alpha, ref: info.ref || 230, luz: info.luz || [1, 1, 1], saida: new ImageData(W, H) };
     }));
     return Pintura.pronto;
   },
@@ -63,8 +66,8 @@ const Pintura = {
     const o = a.saida.data;
     o.set(a.base.data);
     if (!semTinta && hex) {
-      const r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
-      const { alpha, lum, ref } = a;
+      const { alpha, lum, ref, luz } = a;
+      const r = parseInt(hex.slice(1, 3), 16) * luz[0], g = parseInt(hex.slice(3, 5), 16) * luz[1], b = parseInt(hex.slice(5, 7), 16) * luz[2];
       for (let i = 0, n = a.W * a.H; i < n; i++) {
         const al = alpha[i];
         if (al === 0) continue;

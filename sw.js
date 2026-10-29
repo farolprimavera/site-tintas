@@ -24,7 +24,7 @@
    Com versão nova, o site mostra "Nova versão disponível. Atualizar".
    ========================================================================== */
 
-const VERSAO = "tintas-v8";
+const VERSAO = "tintas-v10";
 const CASCA = `${VERSAO}-casca`;
 const IMAGENS = `${VERSAO}-imagens`;
 const MAX_IMAGENS = 120;
@@ -57,6 +57,7 @@ const ARQUIVOS_CASCA = [
   "./js/busca.js",
   "./js/tintometrico.js",
   "./js/totem.js",
+  "./js/qrcode.js",
   "./marca/logo-farol-web.png",
   "./marca/icone-tintometrico-96.png",
   "./marca/icone-tintometrico-192.png",

@@ -73,6 +73,11 @@
       <div class="vitrine-foto">
         <canvas id="telaGrande" width="742" height="504" aria-label="Ambiente pintado com a cor escolhida"></canvas>
         <button type="button" class="ver-original" id="verOriginal">Segure para ver sem tinta</button>
+        <!-- QR Code da cor + ambiente (js/vitrine.js): fica na foto para aparecer até em foto da tela -->
+        <div class="qr-foto" id="qrFoto" hidden>
+          <div class="qr-foto-codigo" id="qrCor" role="img" aria-label="QR Code para abrir esta cor no celular"></div>
+          <span>Leve no celular</span>
+        </div>
       </div>
       <!-- faixa de cores embaixo da foto: troca a cor sem sair do lugar (js/ambiente.js) -->
       <div class="faixa-cores" id="faixaCores" aria-label="Outras cores"></div>
@@ -165,6 +170,7 @@
   <script src="js/app.js"></script>
   <script src="js/busca.js"></script>
   <script src="js/pintura.js"></script>
+  <script src="js/qrcode.js"></script>
   <script src="js/vitrine.js"></script>
   <script src="js/compra.js"></script>
   <script src="js/calculadora.js"></script>

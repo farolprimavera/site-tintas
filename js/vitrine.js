@@ -37,7 +37,7 @@ const Vitrine = {
 
     App.aoMudar((c, op) => {
       Vitrine.desenhar();
-      if (!op.soAmbiente) { Vitrine.resumo(c); Vitrine.barra(); }
+      if (!op.soAmbiente) { Vitrine.resumo(c); Vitrine.barra(); } else Vitrine.qr();
     });
   },
 
@@ -88,16 +88,37 @@ const Vitrine = {
       <div class="cor-acoes">
         <button type="button" class="botao primario" data-ir="compra">Ver tintas e preços</button>
         <button type="button" class="botao" data-ir="calculadora">Calcular quantidade</button>
-        <button type="button" class="botao" id="btnLink">Copiar link</button>
+        <button type="button" class="botao" id="btnLink">${navigator.share ? "Compartilhar" : "Copiar link"}</button>
       </div>`;
     $("corAtual").querySelectorAll("[data-ir]").forEach((b) => b.addEventListener("click", () => irPara($(b.dataset.ir))));
     $("corAtual").querySelectorAll("[data-id]").forEach((b) => b.addEventListener("click", () => App.escolher(POR_ID.get(b.dataset.id))));
     $("btnLink").addEventListener("click", async () => {
       const link = App.linkDaCor(c);
+      const nomeAmb = D.ambientes[App.ambiente].nome.toLowerCase();
+      if (navigator.share) {
+        // celular: abre a lista de apps (WhatsApp, Instagram...)
+        try { await navigator.share({ title: `${c.nome} · Farol da Primavera`, text: `Olha a cor ${c.nome} no ${nomeAmb}:`, url: link }); } catch (e) {}
+        return;
+      }
       try { await navigator.clipboard.writeText(link); $("btnLink").textContent = "Link copiado!"; }
       catch (e) { prompt("Copie o link:", link); }
       setTimeout(() => { const b = $("btnLink"); if (b) b.textContent = "Copiar link"; }, 2000);
     });
+    Vitrine.qr();
+  },
+
+  // QR Code da cor + ambiente atuais (muda junto quando troca o ambiente)
+  qr() {
+    const caixa = $("qrCor"), c = App.cor;
+    if (!caixa || !c || typeof qrcode === "undefined") return;
+    $("qrFoto").hidden = false;
+    const link = App.linkDaCor(c);
+    if (caixa.dataset.link === link) return;
+    caixa.dataset.link = link;
+    const q = qrcode(0, "M");
+    q.addData(link);
+    q.make();
+    caixa.innerHTML = q.createSvgTag({ cellSize: 4, margin: 2, scalable: true });
   },
 
   barra() {
