@@ -661,6 +661,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 /* totem (js/totem.js marca a página): compartilhar/copiar link não serve no aparelho da loja */
 :root[data-totem] #btnLink { display: none; }
+/* no rodapé o número continua à vista, mas sem abrir o WhatsApp no aparelho da loja */
+:root[data-totem] .rodape-whats { pointer-events: none; }
+:root[data-totem] .rodape-whats small { display: none; }
 
 /* barrinha fixa com a cor escolhida (aparece quando a foto sai da tela) */
 .barra-cor {

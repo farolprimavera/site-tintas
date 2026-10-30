@@ -112,8 +112,17 @@ const App = {
     const pasta = publicado ? location.href.split("#")[0].split("?")[0].replace(/[^/]*$/, "") : App.SITE;
     return pasta + App.urlAmbiente(c);
   },
+  // aparelho marcado como totem da loja (js/totem.js; ?totem=1 liga, ?totem=0 desliga)
+  emTotem() {
+    try {
+      const p = new URLSearchParams(location.search).get("totem");
+      if (p === "1" || p === "0") return p === "1";
+      return localStorage.getItem("farol-totem") === "1";
+    } catch (e) { return false; }
+  },
+  // no totem não tem WhatsApp: o cliente está na loja, fala com o vendedor (vazio = esconde os botões)
   whatsapp(texto) {
-    return WHATSAPP ? `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(texto)}` : "";
+    return WHATSAPP && !App.emTotem() ? `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(texto)}` : "";
   },
 };
 
