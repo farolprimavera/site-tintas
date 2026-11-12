@@ -39,20 +39,13 @@ const Pintura = {
       c.clearRect(0, 0, W, H);
       c.drawImage(mask, 0, 0, W, H);
       const m = c.getImageData(0, 0, W, H).data;
-      const n = W * H, lum = new Float32Array(n), cru = new Float32Array(n), alpha = new Float32Array(n);
+      // a máscara já vem com borda suave (meio-tom de ~1 px) e é usada como está:
+      // uma suavização extra aqui espalhava a tinta para fora da parede (folhas, cúpulas, móveis)
+      const n = W * H, lum = new Float32Array(n), alpha = new Float32Array(n);
       for (let i = 0; i < n; i++) {
         const j = i * 4;
         lum[i] = 0.299 * base.data[j] + 0.587 * base.data[j + 1] + 0.114 * base.data[j + 2];
-        cru[i] = m[j] / 255;
-      }
-      // borda suave (3×3) para a tinta não ficar serrilhada
-      for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
-        let s = 0, k = 0;
-        for (let dy = -1; dy <= 1; dy++) {
-          const yy = y + dy; if (yy < 0 || yy >= H) continue;
-          for (let dx = -1; dx <= 1; dx++) { const xx = x + dx; if (xx < 0 || xx >= W) continue; s += cru[yy * W + xx]; k++; }
-        }
-        alpha[y * W + x] = s / k;
+        alpha[i] = m[j] / 255;
       }
       Pintura.amb[id] = { W, H, base, lum, alpha, ref: info.ref || 230, luz: info.luz || [1, 1, 1], saida: new ImageData(W, H) };
     }));
