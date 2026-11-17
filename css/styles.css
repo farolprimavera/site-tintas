@@ -661,11 +661,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 /* totem (js/totem.js marca a página): compartilhar/copiar link não serve no aparelho da loja */
 :root[data-totem] #btnLink { display: none; }
-/* no totem: sem banner de campanha, sem Contato/Sobre nós no menu e sem redes sociais no rodapé */
+/* no totem: sem banner de campanha, sem Contato/Sobre nós no menu, sem a seção Sobre + fotos da loja, sem Como chegar e sem redes sociais */
 :root[data-totem] .hero,
 :root[data-totem] .menu a[data-secao="contato"],
 :root[data-totem] .menu a[data-secao="sobre"],
-:root[data-totem] .redes { display: none; }
+:root[data-totem] .redes,
+:root[data-totem] #sobre,
+:root[data-totem] #como-chegar { display: none; }
 /* no rodapé o número continua à vista, mas sem abrir o WhatsApp no aparelho da loja */
 :root[data-totem] .rodape-whats { pointer-events: none; }
 :root[data-totem] .rodape-whats small { display: none; }

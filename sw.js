@@ -24,7 +24,7 @@
    Com versão nova, o site mostra "Nova versão disponível. Atualizar".
    ========================================================================== */
 
-const VERSAO = "tintas-v13";
+const VERSAO = "tintas-v14";
 const CASCA = `${VERSAO}-casca`;
 const IMAGENS = `${VERSAO}-imagens`;
 const MAX_IMAGENS = 120;
